@@ -27,14 +27,20 @@ public class TypefaceSetter {
 		mAssetManager = assetManager;
 		createDefaultFontSource(fontSource);
 	}
+	
+	public TypefaceSetter(AssetManager assetManager, String fontSource) {
+		mAssetManager = assetManager;
+		createDefaultFontSource(fontSource);
+	}
 
 	public void createDefaultFontSource(String fontSource) {
-		
 		mDefaultTypeface = Typeface.createFromAsset(mAssetManager, fontSource);
 	}
 
 	public void setTypeface() {
-		traverseView(mView);
+		if (mView != null) {
+			traverseView(mView);
+		}
 	}
 	
 	public void setTypeface(View view) {
