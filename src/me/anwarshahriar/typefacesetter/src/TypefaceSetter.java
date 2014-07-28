@@ -1,6 +1,7 @@
 package me.anwarshahriar.typefacesetter.src;
 
 import java.lang.reflect.Method;
+
 import android.app.Activity;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
@@ -10,32 +11,36 @@ import android.view.ViewGroup;
 public class TypefaceSetter {
 	private Activity mActivity;
 	private View mView;
-	private String mFontSource;
 	private Typeface mDefaultTypeface;
 	private AssetManager mAssetManager;
-	
-	public TypefaceSetter(Activity activity, AssetManager assetManager, String fontSource) {
+
+	public TypefaceSetter(Activity activity, String fontSource) {
 		mActivity = activity;
-		setDefaultFontSource(mFontSource);
-		mAssetManager = assetManager;
+		mAssetManager = mActivity.getAssets();
+		createDefaultFontSource(fontSource);
 		mView = mActivity.findViewById(android.R.id.content);
 	}
-	
-	public TypefaceSetter(View view, AssetManager assetManager, String fontSource) {
+
+	public TypefaceSetter(View view, AssetManager assetManager,
+			String fontSource) {
 		mView = view;
 		mAssetManager = assetManager;
-		setDefaultFontSource(fontSource);
+		createDefaultFontSource(fontSource);
 	}
-	
-	public void setDefaultFontSource(String fontSource) {
-		mFontSource = fontSource;
+
+	public void createDefaultFontSource(String fontSource) {
+		
 		mDefaultTypeface = Typeface.createFromAsset(mAssetManager, fontSource);
 	}
-	
+
 	public void setTypeface() {
 		traverseView(mView);
 	}
 	
+	public void setTypeface(View view) {
+		traverseView(view);
+	}
+
 	private void setTypeface(View tv, Typeface typeface) {
 		Method m = null;
 		try {
@@ -46,7 +51,7 @@ public class TypefaceSetter {
 		} catch (Exception e) {
 		}
 	}
-	
+
 	private void traverseView(View view) {
 		if (view instanceof ViewGroup) {
 			ViewGroup viewGroup = (ViewGroup) view;
